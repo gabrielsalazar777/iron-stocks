@@ -1,0 +1,33 @@
+{{>indexPartial}}
+<div>
+  <form action="/auth/register" method="post">
+
+    <label for="email"> E-Mail Address </label>
+    <br />
+    <input id="email" type="email" name="email" placeholder="user@domain.com" />
+
+    <br />
+    <hr />
+
+    <label for="username">Username</label>
+    <br />
+    <input id="username" type="text" name="username" placeholder="User Name" />
+
+    <br />
+    <hr />
+
+    <label for="password">Password</label>
+    <br />
+    <input
+      id="password"
+      type="password"
+      name="password"
+      placeholder="********"
+    />
+
+    <br />
+    <hr />
+
+    <button type="submit">Create Account</button>
+  </form>
+</div>

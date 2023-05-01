@@ -1,0 +1,39 @@
+{{>dashPartial}}
+
+<h1>Welcome {{username}}!</h1>
+
+<form action="/users/dashboard" method="post">
+  <label for="portfolio-name">Portfolio Name</label>
+  <input type="text" name="name" id="portfolio-name" placeholder="Warren Buffett's Portfolio">
+
+  <button type="submit">Create Portfolio</button>
+</form>
+
+{{#each portfolios}}
+<p>Portfolio Found:</p>
+<a href="/users/portfolio/{{_id}}">{{name}}</a>
+{{/each}}
+
+<div class="tradingview-widget-container">
+  <div id="tradingview_fcc6d"></div>
+  <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/symbols/NASDAQ-AAPL/" rel="noopener" target="_blank"><span class="blue-text">AAPL stock chart</span></a> by TradingView</div>
+  <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+  <script type="text/javascript">
+  new TradingView.widget(
+  {
+"width": "52vw",
+  "height": "640vh",
+  "symbol": "NASDAQ:AAPL",
+  "interval": "D",
+  "timezone": "Etc/UTC",
+  "theme": "light",
+  "style": "1",
+  "locale": "en",
+  "toolbar_bg": "#f1f3f6",
+  "enable_publishing": false,
+  "allow_symbol_change": true,
+  "container_id": "tradingview_fcc6d"
+}
+  );
+  </script>
+</div>

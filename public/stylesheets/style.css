@@ -4,5 +4,17 @@ body {
 }
 
 a {
-  color: #00B7FF;
+  color: #00b7ff;
+}
+
+body {
+  background-color: rgb(234, 237, 239);
+  /* height: 1000px; */
+  /* width: 100vw; */
+}
+
+.tradingview-widget-container {
+  /* height: 500px; */
+  background-color: red;
+  /* width: 100vw; */
 }
