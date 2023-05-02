@@ -2,22 +2,27 @@
 
 <h1>Your portfolio!</h1>
 
-Portfolio Name: {{name}}
+Portfolio Name:
+{{name}}
 
 <form action="/users/portfolio/{{_id}}" method="post">
-<p>Add Stock</p>
+  <p>Add Stock</p>
 
-<label for="stock-ticker">Stock Ticker</label>
-<input type="text" name="ticker" id="stock-ticker" placeholder="AAPL">
+  <label for="stock-ticker">Stock Ticker</label>
+  <input type="text" name="ticker" id="stock-ticker" placeholder="AAPL" />
 
-<label for="stock-name">Stock Name</label>
-<input type="text" name="name" id="stock-name" placeholder="Apple Inc.">
+  <label for="stock-name">Stock Name</label>
+  <input type="text" name="name" id="stock-name" placeholder="Apple Inc." />
 
-<button type="submit">Add Stock</button>
+  <button type="submit">Add Stock</button>
 
 </form>
 
 {{#each stocks}}
-    <p>Name: {{name}} </p>
-    <p>Ticker: {{ticker}} </p>
+  <p>Name: {{name}} </p>
+  <p>Ticker: {{ticker}} </p>
+  <p>{{quote.0.[Global Quote].[02. open]}}</p>
+  <form action="/users/portfolio/delete/{{_id}}" method="post">
+    <button type="submit">Remove Stock</button>
+  </form>
 {{/each}}

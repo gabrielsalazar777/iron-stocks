@@ -10,6 +10,7 @@ const stockSchema = new Schema(
       type: String,
       required: true,
     },
+    quote: Array,
   },
   {
     timestamps: true,

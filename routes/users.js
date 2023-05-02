@@ -65,13 +65,57 @@ router.get("/portfolio/:portfolioId", (req, res, next) => {
   Portfolio.findById(req.params.portfolioId)
     .populate("stocks")
     .then((portfolio) => {
-      res.render("portfolio/portfolio.hbs", portfolio);
+      if (portfolio.stocks.length !== 0) {
+        portfolio.stocks.forEach((e) => {
+          axios
+            .get(
+              `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${e.ticker}&apikey=F6PG0KOXPZYMOK2E`
+            )
+            .then((newQuote) => {
+              Stock.findByIdAndUpdate(
+                e._id,
+                { quote: newQuote.data },
+                { new: true }
+              ).then(() => {
+                res.render("portfolio/portfolio.hbs", portfolio);
+                console.log(portfolio);
+                console.log("New quote: ", portfolio.stocks[0].quote);
+              });
+            });
+        });
+      } else {
+        res.render("portfolio/portfolio.hbs", portfolio);
+        console.log(portfolio);
+        console.log("New quote: ", portfolio.stocks[0].quote);
+      }
+    })
+    .catch((err) => {
+      console.log(err);
     });
+});
+
+router.post("/portfolio/delete/:stockId", (req, res, next) => {
+  const stockId = req.params.stockId;
+  Portfolio.find({ stocks: `${stockId}` })
+    .then((portfolio) => {
+      console.log(portfolio);
+      Stock.findByIdAndRemove(stockId)
+      .then(() => {
+        res.redirect(`/users/portfolio/${portfolio._id}`)
+      })
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  // .then(()) => {
+  // res.redirect('/users/portfolio/')
+  // }
 });
 
 router.post("/portfolio/:portfolioId", (req, res, next) => {
   const portfolioId = req.params.portfolioId;
   const { ticker, name } = req.body;
+
   Stock.create({ ticker, name }).then((newStock) => {
     Portfolio.findByIdAndUpdate(
       portfolioId,
