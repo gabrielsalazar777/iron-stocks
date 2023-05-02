@@ -6,10 +6,6 @@ const stockSchema = new Schema(
       type: String,
       required: true,
     },
-    name: {
-      type: String,
-      required: true,
-    },
     quote: Array,
   },
   {

@@ -26,7 +26,7 @@ router.get("/dashboard", (req, res, next) => {
 router.post("/dashboard", (req, res, next) => {
   // console.log('Req body: ', req.body);
   const { name } = req.body;
-  console.log("Req body name: ", name);
+  // console.log("Req body name: ", name);
   Portfolio.create({ name })
     .then((newPortfolio) => {
       User.findByIdAndUpdate(
@@ -56,35 +56,25 @@ router.get("/portfolio/:portfolioId", (req, res, next) => {
               `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${e.ticker}&apikey=F6PG0KOXPZYMOK2E`
             )
             .then((newQuote) => {
-              console.log("NEW QUOTEE: ", newQuote.data);
-              console.log("E ID: ", e._id);
+              // console.log("NEW QUOTEE: ", newQuote.data);
+              // console.log("E ID: ", e._id);
               Stock.findByIdAndUpdate(
                 e._id,
                 { quote: newQuote.data },
                 { new: true }
               ).then((stock) => {
-                console.log("LINE 82 TEST: ", stock.quote);
+                // console.log("LINE 82 TEST: ", stock.quote);
               });
-              // .then(() => {
-              //   res.render("portfolio/portfolio.hbs", portfolio);
-              //   console.log(portfolio);
-              //   console.log("New quote: ", portfolio.stocks[0].quote);
-              // });
             });
         });
       }
-      // else {
-      //   res.render("portfolio/portfolio.hbs", portfolio);
-      //   console.log(portfolio);
-      //   console.log("New quote: ", portfolio.stocks[0].quote);
-      // }
     })
     .then(() => {
       Portfolio.findById(req.params.portfolioId)
         .populate("stocks")
         .then((portfolio) => {
           res.render("portfolio/portfolio.hbs", portfolio);
-          console.log("LINE 87: ", portfolio);
+          // console.log("LINE 87: ", portfolio);
           // console.log("New quote: ", portfolio.stocks[0].quote);
         });
     })
@@ -96,11 +86,11 @@ router.get("/portfolio/:portfolioId", (req, res, next) => {
 // add stock to portfolio
 router.post("/portfolio/:portfolioId", (req, res, next) => {
   const portfolioId = req.params.portfolioId;
-  const { ticker, name } = req.body;
+  const { ticker } = req.body;
 
   Stock.find({ ticker: ticker }).then((foundStock) => {
     if (foundStock.length !== 0) {
-      console.log("LINE 103: ", foundStock, foundStock[0]._id);
+      // console.log("LINE 103: ", foundStock, foundStock[0]._id);
       Portfolio.findByIdAndUpdate(
         portfolioId,
         {
@@ -109,28 +99,37 @@ router.post("/portfolio/:portfolioId", (req, res, next) => {
         { new: true }
       )
         .then((portfolio) => {
-          console.log("LINE 112: ", portfolio);
+          // console.log("LINE 112: ", portfolio);
           res.redirect(`/users/portfolio/${portfolioId}`);
         })
         .catch((err) => {
           console.log(err);
         });
     } else {
-      Stock.create({ ticker, name }).then((newStock) => {
-        Portfolio.findByIdAndUpdate(
-          portfolioId,
-          {
-            $push: { stocks: newStock._id },
-          },
-          { new: true }
+      axios
+        .get(
+          `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${ticker}&apikey=F6PG0KOXPZYMOK2E`
         )
-          .then(() => {
-            res.redirect(`/users/portfolio/${portfolioId}`);
-          })
-          .catch((err) => {
-            console.log(err);
+        .then((newQuote) => {
+          const quote = []
+          quote.push(newQuote.data)
+          console.log("LINE 114: ", quote[0].data);
+          Stock.create({ ticker, quote }).then((newStock) => {
+            Portfolio.findByIdAndUpdate(
+              portfolioId,
+              {
+                $push: { stocks: newStock._id },
+              },
+              { new: true }
+            )
+              .then(() => {
+                res.redirect(`/users/portfolio/${portfolioId}`);
+              })
+              .catch((err) => {
+                console.log(err);
+              });
           });
-      });
+        });
     }
   });
 });
