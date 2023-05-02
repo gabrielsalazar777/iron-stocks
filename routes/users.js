@@ -84,7 +84,7 @@ router.get("/portfolio/:portfolioId", (req, res, next) => {
         .populate("stocks")
         .then((portfolio) => {
           res.render("portfolio/portfolio.hbs", portfolio);
-          console.log(portfolio);
+          console.log("LINE 87: ", portfolio);
           // console.log("New quote: ", portfolio.stocks[0].quote);
         });
     })
@@ -98,24 +98,44 @@ router.post("/portfolio/:portfolioId", (req, res, next) => {
   const portfolioId = req.params.portfolioId;
   const { ticker, name } = req.body;
 
-  Stock.create({ ticker, name }).then((newStock) => {
-    Portfolio.findByIdAndUpdate(
-      portfolioId,
-      {
-        $push: { stocks: newStock._id },
-      },
-      { new: true }
-    )
-      .then(() => {
-        res.redirect(`/users/portfolio/${portfolioId}`);
-      })
-      .catch((err) => {
-        console.log(err);
+  Stock.find({ ticker: ticker }).then((foundStock) => {
+    if (foundStock.length !== 0) {
+      console.log("LINE 103: ", foundStock, foundStock[0]._id);
+      Portfolio.findByIdAndUpdate(
+        portfolioId,
+        {
+          $push: { stocks: foundStock[0]._id },
+        },
+        { new: true }
+      )
+        .then((portfolio) => {
+          console.log("LINE 112: ", portfolio);
+          res.redirect(`/users/portfolio/${portfolioId}`);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      Stock.create({ ticker, name }).then((newStock) => {
+        Portfolio.findByIdAndUpdate(
+          portfolioId,
+          {
+            $push: { stocks: newStock._id },
+          },
+          { new: true }
+        )
+          .then(() => {
+            res.redirect(`/users/portfolio/${portfolioId}`);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       });
+    }
   });
 });
 
-// delete stock from portfolio
+// "delete" stock from portfolio (update portfolio)
 router.post("/portfolio/delete/:portfolioId/:stockId", (req, res, next) => {
   const portfolioId = req.params.portfolioId;
   const stockId = req.params.stockId;
@@ -131,7 +151,5 @@ router.post("/portfolio/delete/:portfolioId/:stockId", (req, res, next) => {
       console.log(err);
     });
 });
-
-
 
 module.exports = router;
