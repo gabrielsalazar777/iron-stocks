@@ -22,7 +22,7 @@ Portfolio Name:
   <p>Name: {{name}} </p>
   <p>Ticker: {{ticker}} </p>
   <p>{{quote.0.[Global Quote].[02. open]}}</p>
-  <form action="/users/portfolio/delete/{{_id}}" method="post">
+  <form action="/users/portfolio/delete/{{../_id}}/{{_id}}" method="post">
     <button type="submit">Remove Stock</button>
   </form>
 {{/each}}

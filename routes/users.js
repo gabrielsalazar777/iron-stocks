@@ -6,25 +6,7 @@ const User = require("../models/User");
 const Portfolio = require("../models/Portfolio");
 const Stock = require("../models/Stock");
 
-// router.get("/dashboard/:userId", function (req, res, next) {
-//   console.log("Req session user: ", req.session.user);
-//   User.findById(req.params.userId)
-//     .then((user) => {
-//       if (req.session.user && user._id.toString() === req.session.user._id) {
-//         res.render("users/user-dashboard.hbs", user);
-//       } else if (req.session.user) {
-//         User.findById(req.session.user._id).then((user) => {
-//           res.redirect(`/users/dashboard/${user._id}`);
-//         });
-//       } else {
-//         res.redirect("/auth/login");
-//       }
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//     });
-// });
-
+// get dashboard
 router.get("/dashboard", (req, res, next) => {
   if (req.session.user) {
     User.findById(req.session.user._id)
@@ -40,6 +22,7 @@ router.get("/dashboard", (req, res, next) => {
   }
 });
 
+// add portfolio
 router.post("/dashboard", (req, res, next) => {
   // console.log('Req body: ', req.body);
   const { name } = req.body;
@@ -61,6 +44,7 @@ router.post("/dashboard", (req, res, next) => {
     });
 });
 
+// get portfolio
 router.get("/portfolio/:portfolioId", (req, res, next) => {
   Portfolio.findById(req.params.portfolioId)
     .populate("stocks")
@@ -72,46 +56,44 @@ router.get("/portfolio/:portfolioId", (req, res, next) => {
               `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${e.ticker}&apikey=F6PG0KOXPZYMOK2E`
             )
             .then((newQuote) => {
+              console.log("NEW QUOTEE: ", newQuote.data);
+              console.log("E ID: ", e._id);
               Stock.findByIdAndUpdate(
                 e._id,
                 { quote: newQuote.data },
                 { new: true }
-              ).then(() => {
-                res.render("portfolio/portfolio.hbs", portfolio);
-                console.log(portfolio);
-                console.log("New quote: ", portfolio.stocks[0].quote);
+              ).then((stock) => {
+                console.log("LINE 82 TEST: ", stock.quote);
               });
+              // .then(() => {
+              //   res.render("portfolio/portfolio.hbs", portfolio);
+              //   console.log(portfolio);
+              //   console.log("New quote: ", portfolio.stocks[0].quote);
+              // });
             });
         });
-      } else {
-        res.render("portfolio/portfolio.hbs", portfolio);
-        console.log(portfolio);
-        console.log("New quote: ", portfolio.stocks[0].quote);
       }
+      // else {
+      //   res.render("portfolio/portfolio.hbs", portfolio);
+      //   console.log(portfolio);
+      //   console.log("New quote: ", portfolio.stocks[0].quote);
+      // }
+    })
+    .then(() => {
+      Portfolio.findById(req.params.portfolioId)
+        .populate("stocks")
+        .then((portfolio) => {
+          res.render("portfolio/portfolio.hbs", portfolio);
+          console.log(portfolio);
+          // console.log("New quote: ", portfolio.stocks[0].quote);
+        });
     })
     .catch((err) => {
       console.log(err);
     });
 });
 
-router.post("/portfolio/delete/:stockId", (req, res, next) => {
-  const stockId = req.params.stockId;
-  Portfolio.find({ stocks: `${stockId}` })
-    .then((portfolio) => {
-      console.log(portfolio);
-      Stock.findByIdAndRemove(stockId)
-      .then(() => {
-        res.redirect(`/users/portfolio/${portfolio._id}`)
-      })
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-  // .then(()) => {
-  // res.redirect('/users/portfolio/')
-  // }
-});
-
+// add stock to portfolio
 router.post("/portfolio/:portfolioId", (req, res, next) => {
   const portfolioId = req.params.portfolioId;
   const { ticker, name } = req.body;
@@ -132,5 +114,24 @@ router.post("/portfolio/:portfolioId", (req, res, next) => {
       });
   });
 });
+
+// delete stock from portfolio
+router.post("/portfolio/delete/:portfolioId/:stockId", (req, res, next) => {
+  const portfolioId = req.params.portfolioId;
+  const stockId = req.params.stockId;
+  Portfolio.findByIdAndUpdate(
+    portfolioId,
+    { $pull: { stocks: stockId } },
+    { new: true }
+  )
+    .then(() => {
+      res.redirect(`/users/portfolio/${portfolioId}`);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
+
 
 module.exports = router;
