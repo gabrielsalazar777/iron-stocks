@@ -83,6 +83,46 @@ router.get("/portfolio/:portfolioId", (req, res, next) => {
     });
 });
 
+// edit portfolio
+router.get("/edit/:portfolioId", (req, res, next) => {
+  const portfolioId = req.params.portfolioId;
+  Portfolio.findById(portfolioId).then((portfolio) => {
+    res.render("portfolio/edit-portfolio.hbs", portfolio);
+    console.log(portfolio);
+  });
+});
+
+router.post("/edit/:portfolioId", (req, res, next) => {
+  const portfolioId = req.params.portfolioId;
+  const { name } = req.body;
+  Portfolio.findByIdAndUpdate(portfolioId, { name: name }, { new: true })
+    .then(() => {
+      res.redirect("/users/dashboard");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
+// delete portfolio
+router.post("/delete-portfolio/:portfolioId", (req, res, next) => {
+  const portfolioId = req.params.portfolioId;
+  console.log(portfolioId);
+  User.findByIdAndUpdate(
+    req.session.user._id,
+    { $pull: { portfolios: portfolioId } },
+    { new: true }
+  )
+    .then(() => {
+      Portfolio.findByIdAndDelete(portfolioId).then(() => {
+        res.redirect("/users/dashboard");
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
+
 // add stock to portfolio
 router.post("/portfolio/:portfolioId", (req, res, next) => {
   const portfolioId = req.params.portfolioId;
@@ -111,8 +151,8 @@ router.post("/portfolio/:portfolioId", (req, res, next) => {
           `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${ticker}&apikey=F6PG0KOXPZYMOK2E`
         )
         .then((newQuote) => {
-          const quote = []
-          quote.push(newQuote.data)
+          const quote = [];
+          quote.push(newQuote.data);
           console.log("LINE 114: ", quote[0].data);
           Stock.create({ ticker, quote }).then((newStock) => {
             Portfolio.findByIdAndUpdate(

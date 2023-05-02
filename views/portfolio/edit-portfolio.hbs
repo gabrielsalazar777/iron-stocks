@@ -1,0 +1,10 @@
+{{>dashPartial}}
+
+<h1>Edit Portfolio: {{name}}</h1>
+
+<form action="/users/edit/{{_id}}" method="post">
+    <label for="name">Name</label>
+    <input type="text" name="name" id="name" value="{{name}}">
+
+    <button type="submit">Save Changes</button>
+</form>

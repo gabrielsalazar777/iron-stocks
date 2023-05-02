@@ -12,28 +12,10 @@
 {{#each portfolios}}
 <p>Portfolio Found:</p>
 <a href="/users/portfolio/{{_id}}">{{name}}</a>
+<form action="/users/edit/{{id}}" method="get">
+  <button type="submit">Edit Portfolio</button>
+</form>
+<form action="/users/delete-portfolio/{{id}}" method="post">
+  <button type="submit">Delete Portfolio</button>
+</form>
 {{/each}}
-
-<div class="tradingview-widget-container">
-  <div id="tradingview_fcc6d"></div>
-  <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/symbols/NASDAQ-AAPL/" rel="noopener" target="_blank"><span class="blue-text">AAPL stock chart</span></a> by TradingView</div>
-  <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
-  <script type="text/javascript">
-  new TradingView.widget(
-  {
-"width": "52vw",
-  "height": "640vh",
-  "symbol": "NASDAQ:AAPL",
-  "interval": "D",
-  "timezone": "Etc/UTC",
-  "theme": "light",
-  "style": "1",
-  "locale": "en",
-  "toolbar_bg": "#f1f3f6",
-  "enable_publishing": false,
-  "allow_symbol_change": true,
-  "container_id": "tradingview_fcc6d"
-}
-  );
-  </script>
-</div>

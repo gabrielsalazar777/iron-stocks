@@ -2,8 +2,7 @@
 
 <h1>Your portfolio!</h1>
 
-Portfolio Name:
-{{name}}
+<p> Portfolio Name: {{name}}</p>
 
 <form action="/users/portfolio/{{_id}}" method="post">
   <p>Add Stock</p>
@@ -16,7 +15,8 @@ Portfolio Name:
 </form>
 
 {{#each stocks}}
-  <p>Ticker: {{ticker}} </p>
+  <p>Ticker:</p>
+  <a href="/stock/{{_id}}">{{ticker}}</a>
   <p>{{quote.0.[Global Quote].[02. open]}}</p>
   <form action="/users/portfolio/delete/{{../_id}}/{{_id}}" method="post">
     <button type="submit">Remove Stock</button>
