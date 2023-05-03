@@ -1,33 +1,73 @@
 {{>indexPartial}}
 <div>
   <form action="/auth/register" method="post">
+    {{#if email}}
+      <label for="email"> E-Mail Address </label>
+      <br />
+      <input id="email" type="email" name="email" value={{email}} />
 
-    <label for="email"> E-Mail Address </label>
-    <br />
-    <input id="email" type="email" name="email" placeholder="user@domain.com" />
+      <br />
+      <hr />
 
-    <br />
-    <hr />
+      <label for="username">Username</label>
+      <br />
+      <input id="username" type="text" name="username" value={{username}} />
 
-    <label for="username">Username</label>
-    <br />
-    <input id="username" type="text" name="username" placeholder="User Name" />
+      <br />
+      <hr />
 
-    <br />
-    <hr />
+      <label for="passwordClear">Password</label>
+      <br />
+      <input
+        id="passwordClear"
+        type="password"
+        name="passwordClear"
+        placeholder="********"
+      />
 
-    <label for="password">Password</label>
-    <br />
-    <input
-      id="password"
-      type="password"
-      name="password"
-      placeholder="********"
-    />
+    {{else}}
+      <label for="email"> E-Mail Address </label>
+      <br />
+      <input
+        id="email"
+        type="email"
+        name="email"
+        placeholder="user@domain.com"
+      />
+
+      <br />
+      <hr />
+
+      <label for="username">Username</label>
+      <br />
+      <input
+        id="username"
+        type="text"
+        name="username"
+        placeholder="User Name"
+      />
+
+      <br />
+      <hr />
+
+      <label for="passwordClear">Password</label>
+      <br />
+      <input
+        id="passwordClear"
+        type="password"
+        name="passwordClear"
+        placeholder="********"
+      />
+
+    {{/if}}
 
     <br />
     <hr />
 
     <button type="submit">Create Account</button>
+
+    {{#if errorMessage}}
+      <p class="error">{{errorMessage}}</p>
+    {{/if}}
   </form>
 </div>

@@ -136,60 +136,80 @@ router.post(
 );
 
 // add stock to portfolio
-router.post("/portfolio/:portfolioId", isLoggedOut, isOwner, (req, res, next) => {
-  const portfolioId = req.params.portfolioId;
-  const { ticker } = req.body;
-
-  Stock.find({ ticker: ticker }).then((foundStock) => {
-    if (foundStock.length !== 0) {
-      // console.log("LINE 103: ", foundStock, foundStock[0]._id);
-      Portfolio.findByIdAndUpdate(
-        portfolioId,
-        {
-          $push: { stocks: foundStock[0]._id },
-        },
-        { new: true }
-      )
-        .then((portfolio) => {
-          // console.log("LINE 112: ", portfolio);
-          res.redirect(`/users/portfolio/${portfolioId}`);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    } else {
-      axios
-        .get(
-          `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${ticker}&apikey=F6PG0KOXPZYMOK2E`
-        )
-        .then((newQuote) => {
-          const quote = [];
-          quote.push(newQuote.data);
-          console.log("LINE 114: ", quote[0].data);
-          Stock.create({ ticker, quote }).then((newStock) => {
-            Portfolio.findByIdAndUpdate(
-              portfolioId,
-              {
-                $push: { stocks: newStock._id },
-              },
-              { new: true }
+router.post(
+  "/portfolio/:portfolioId",
+  isLoggedOut,
+  isOwner,
+  (req, res, next) => {
+    const portfolioId = req.params.portfolioId;
+    const { ticker } = req.body;
+    console.log('LINE 146 REQ BODY: ', ticker.length)
+    if (ticker.length >= 1) {
+      Stock.find({ ticker: ticker }).then((foundStock) => {
+        if (foundStock.length !== 0) {
+          // console.log("LINE 103: ", foundStock, foundStock[0]._id);
+          Portfolio.findByIdAndUpdate(
+            portfolioId,
+            {
+              $push: { stocks: foundStock[0]._id },
+            },
+            { new: true }
+          )
+            .then((portfolio) => {
+              // console.log("LINE 112: ", portfolio);
+              res.redirect(`/users/portfolio/${portfolioId}`);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        } else {
+          axios
+            .get(
+              `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${ticker}&apikey=F6PG0KOXPZYMOK2E`
             )
-              .then(() => {
-                res.redirect(`/users/portfolio/${portfolioId}`);
-              })
-              .catch((err) => {
-                console.log(err);
+            .then((newQuote) => {
+              const quote = [];
+              quote.push(newQuote.data);
+              console.log("LINE 114: ", quote[0].data);
+              Stock.create({ ticker, quote }).then((newStock) => {
+                Portfolio.findByIdAndUpdate(
+                  portfolioId,
+                  {
+                    $push: { stocks: newStock._id },
+                  },
+                  { new: true }
+                )
+                  .then(() => {
+                    res.redirect(`/users/portfolio/${portfolioId}`);
+                  })
+                  .catch((err) => {
+                    console.log(err);
+                  });
               });
-          });
-        });
+            });
+        }
+      });
     }
-  });
-});
+    // THIS WAS A WORK IN PROGRESS (WIP) FOR ERROR MESSAGE ON EMPTY STOCK NAME
+    // else {
+    //   Portfolio.findById(req.params.portfolioId)
+    //       .populate("stocks")
+    //       .then((portfolio) => {
+    //         res.render("portfolio/portfolio.hbs", portfolio, errorMessage: "Enter stock name");
+
+    //       })
+    // res.render("users/portfolio.hbs", {
+    //   errorMessage: "Email or password is incorrect",
+    // });
+  // }
+  }
+);
 
 // "delete" stock from portfolio (update portfolio)
 router.post(
   "/portfolio/delete/:portfolioId/:stockId",
-  isLoggedOut, isOwner, 
+  isLoggedOut,
+  isOwner,
   (req, res, next) => {
     const portfolioId = req.params.portfolioId;
     const stockId = req.params.stockId;

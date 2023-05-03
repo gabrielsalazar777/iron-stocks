@@ -1,51 +1,67 @@
 const express = require("express");
 const router = express.Router();
 const mongoose = require("mongoose");
-const axios = require("axios");
 const User = require("../models/User");
+const bcryptjs = require("bcryptjs");
+const saltRounds = 10;
 
 const { isLoggedIn } = require("../middleware/route-guard");
 const { isLoggedOut } = require("../middleware/route-guard");
 
-//test
-// const request = require("request");
-// const url =
-//   "https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers=AAPL&limit=1&apikey=F6PG0KOXPZYMOK2E";
-//test
-
 router.get("/register", isLoggedIn, (req, res, next) => {
-  //   axios
-  //     .get(url)
-  //     .then((news) => {
-  //       console.log("News test: ", news.data.feed);
-  //       res.render("auth/register.hbs");
-  //     })
-  //     .then(() => {
-  //       axios
-  //         .get(
-  //           "https://www.alphavantage.co/query?function=OVERVIEW&symbol=IBM&apikey=F6PG0KOXPZYMOK2E"
-  //         )
-  //         .then((overview) => {
-  //           console.log("Company overview: ", overview.data);
-  //         });
-  //     });
-  //   console.log(req.body)
   res.render("auth/register.hbs");
 });
 
 router.post("/register", isLoggedIn, (req, res, next) => {
   console.log("REGISTRATION: ", req.body);
-  const { email, username, password } = req.body;
-  User.create({
-    email,
-    username,
-    password,
-  })
-    .then(() => {
+  const { email, username, passwordClear } = req.body;
+
+  if (!email || !username || !passwordClear) {
+    res.render("auth/register.hbs", {
+      errorMessage: "Please enter all fields.",
+    });
+    return;
+  }
+
+  const regex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/;
+  if (!regex.test(passwordClear)) {
+    res.status(500).render("auth/register.hbs", {
+      email,
+      username,
+      errorMessage:
+        "Please enter password containing 8 characters, including one number, lowercase letter, and uppercase letter.",
+    });
+    return;
+  }
+
+  bcryptjs
+    .genSalt(saltRounds)
+    .then((salt) => bcryptjs.hash(passwordClear, salt))
+    .then((hashedPassword) => {
+      return User.create({
+        email,
+        username,
+        password: hashedPassword,
+      });
+    })
+    .then((userFromDB) => {
+      //   console.log("Newly created user is: ", userFromDB);
       res.redirect("/auth/login");
     })
     .catch((err) => {
-      console.log(err);
+      if (err instanceof mongoose.Error.ValidationError) {
+        res
+          .status(500)
+          .render("auth/register.hbs", { errorMessage: err.message });
+      } else if (err.code === 11000) {
+        // console.log("line 58 hit");
+        res.status(500).render("auth/register.hbs", {
+          errorMessage:
+            "Username and email need to be unique. Either username or email is already used.",
+        });
+      } else {
+        next(err);
+      }
     });
 });
 
@@ -55,14 +71,23 @@ router.get("/login", isLoggedIn, (req, res, next) => {
 
 router.post("/login", isLoggedIn, (req, res, next) => {
   const { email, password } = req.body;
+
+  if (email === "" || password === "") {
+    res.render("auth/login.hbs", {
+      errorMessage: "Please enter email and password to login.",
+    });
+    return;
+  }
+
   User.findOne({ email })
     .then((user) => {
-      if (user && password === user.password) {
-        console.log("Successful user/pw match: ", user);
+      if (user && bcryptjs.compareSync(password, user.password)) {
         req.session.user = user;
-        console.log("Session user: ", req.session.user);
-        // res.redirect(`/users/dashboard/${user._id}`);
         res.redirect("/users/dashboard");
+      } else {
+        res.render("auth/login.hbs", {
+          errorMessage: "Email or password is incorrect",
+        });
       }
     })
     .catch((err) => {
@@ -71,6 +96,7 @@ router.post("/login", isLoggedIn, (req, res, next) => {
 });
 
 router.post("/logout", isLoggedOut, (req, res, next) => {
+    // console.log(req.session.user)
   req.session.destroy((err) => {
     // if (err) next(err);
     res.redirect("/");

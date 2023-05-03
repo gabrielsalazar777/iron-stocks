@@ -1,14 +1,23 @@
 {{>indexPartial}}
 
 <div>
-    <h2>Login</h2>
-    <form action="/auth/login" method="post">
-        <label for="email">E-Mail Address</label>
-        <input type="email" name="email" id="email" placeholder="user@domain.com">
+  <h2>Login</h2>
+  <form action="/auth/login" method="post">
+    <label for="email">E-Mail Address</label>
+    <input type="email" name="email" id="email" placeholder="user@domain.com" />
 
-        <label for="password">Password</label>
-        <input type="password" name="password" id="password" placeholder="********">
+    <label for="password">Password</label>
+    <input
+      type="password"
+      name="password"
+      id="password"
+      placeholder="********"
+    />
 
-        <button type="submit">Login</button>
-    </form>
+    <button type="submit">Login</button>
+
+    {{#if errorMessage}}
+      <p class="error">{{errorMessage}}</p>
+    {{/if}}
+  </form>
 </div>
