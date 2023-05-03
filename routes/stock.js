@@ -6,7 +6,9 @@ const User = require("../models/User");
 const Portfolio = require("../models/Portfolio");
 const Stock = require("../models/Stock");
 
-router.get("/:stockId", (req, res, next) => {
+const { isLoggedOut } = require("../middleware/route-guard");
+
+router.get("/:stockId", isLoggedOut, (req, res, next) => {
   const stockId = req.params.stockId;
   const stockRef = [];
   Stock.findById(stockId)

@@ -14,8 +14,8 @@
     <li>Dividend Date: {{[1].DividendDate}} </li>
     <li>52 Week Low: {{[1].52WeekLow}} </li>
     <li>52 Week High: {{[1].52WeekHigh}} </li>
-    <li>200 Day Moving Average: {{[1].200DayMovingAverage}} </li>
-    <li>Analyst Target Price: {{[1].AnalystTargetPrice}} </li>
+    <li>200-Day Moving Average: ${{[1].200DayMovingAverage}} </li>
+    <li>Analyst Price Target: ${{[1].AnalystTargetPrice}} </li>
 </ul>
 
 
@@ -48,4 +48,6 @@
     <a href="{{url}}">{{title}}</a>
     <p>{{source}}</p>
     <p>Sentiment: {{overall_sentiment_label}}</p>
+    <br>
+    <hr>
 {{/each}}

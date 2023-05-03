@@ -4,13 +4,16 @@ const mongoose = require("mongoose");
 const axios = require("axios");
 const User = require("../models/User");
 
+const { isLoggedIn } = require("../middleware/route-guard");
+const { isLoggedOut } = require("../middleware/route-guard");
+
 //test
 // const request = require("request");
 // const url =
 //   "https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers=AAPL&limit=1&apikey=F6PG0KOXPZYMOK2E";
 //test
 
-router.get("/register", (req, res, next) => {
+router.get("/register", isLoggedIn, (req, res, next) => {
   //   axios
   //     .get(url)
   //     .then((news) => {
@@ -30,7 +33,7 @@ router.get("/register", (req, res, next) => {
   res.render("auth/register.hbs");
 });
 
-router.post("/register", (req, res, next) => {
+router.post("/register", isLoggedIn, (req, res, next) => {
   console.log("REGISTRATION: ", req.body);
   const { email, username, password } = req.body;
   User.create({
@@ -46,11 +49,11 @@ router.post("/register", (req, res, next) => {
     });
 });
 
-router.get("/login", (req, res, next) => {
+router.get("/login", isLoggedIn, (req, res, next) => {
   res.render("auth/login.hbs");
 });
 
-router.post("/login", (req, res, next) => {
+router.post("/login", isLoggedIn, (req, res, next) => {
   const { email, password } = req.body;
   User.findOne({ email })
     .then((user) => {
@@ -67,7 +70,7 @@ router.post("/login", (req, res, next) => {
     });
 });
 
-router.post("/logout", (req, res, next) => {
+router.post("/logout", isLoggedOut, (req, res, next) => {
   req.session.destroy((err) => {
     // if (err) next(err);
     res.redirect("/");

@@ -17,8 +17,11 @@
 {{#each stocks}}
   <p>Ticker:</p>
   <a href="/stock/{{_id}}">{{ticker}}</a>
-  <p>{{quote.0.[Global Quote].[02. open]}}</p>
+  <p>Current Price: {{quote.0.[Global Quote].[05. price]}}</p>
+  <p>Change: {{quote.0.[Global Quote].[09. change]}} ({{quote.0.[Global Quote].[10. change percent]}})</p>
   <form action="/users/portfolio/delete/{{../_id}}/{{_id}}" method="post">
     <button type="submit">Remove Stock</button>
   </form>
+  <br>
+  <hr>
 {{/each}}
