@@ -5,6 +5,12 @@ body {
   padding: 0; */
 }
 
+.navbar-brand a {
+  text-decoration: none;
+  color: inherit;
+  /* color: white; */
+}
+
 nav img {
   width: 5vw;
 }
