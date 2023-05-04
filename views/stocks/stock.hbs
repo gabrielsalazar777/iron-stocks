@@ -19,15 +19,14 @@
 </ul>
 
 
-<div class="tradingview-widget-container">
+{{!-- <div class="tradingview-widget-container"> --}}
   <div id="tradingview_fcc6d"></div>
   <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/symbols/{{[1].Exchange}}-{{[1].Ticker}}/" rel="noopener" target="_blank"><span class="blue-text">{{[1].Ticker}} stock chart</span></a> by TradingView</div>
   <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
   <script type="text/javascript">
   new TradingView.widget(
   {
-"width": "52vw",
-  "height": "640vh",
+  "height": "650vh",
   "interval": "D",
   "symbol": '{{[0]}}',
   "timezone": "Etc/UTC",
@@ -41,7 +40,7 @@
 }
   );
   </script>
-</div>
+{{!-- </div> --}}
 
 
 {{#each [2]}}

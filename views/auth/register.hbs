@@ -1,73 +1,93 @@
-{{>indexPartial}}
-<div>
-  <form action="/auth/register" method="post">
-    {{#if email}}
-      <label for="email"> E-Mail Address </label>
-      <br />
-      <input id="email" type="email" name="email" value={{email}} />
+<div id="landing-body">
+  {{>indexPartial}}
+  <div class="container">
+    <form action="/auth/register" method="post">
+      {{#if email}}
 
-      <br />
-      <hr />
+        <div class="form-floating">
+          <input
+            class="form-control"
+            id="email"
+            type="email"
+            name="email"
+            value={{email}}
+          />
+          <label for="email" class="form-label"></label>
+        </div>
 
-      <label for="username">Username</label>
-      <br />
-      <input id="username" type="text" name="username" value={{username}} />
+        <div class="form-floating">
+          <input
+            class="form-contorl"
+            id="username"
+            type="text"
+            name="username"
+            value={{username}}
+          />
+          <label for="username" class="form-label"></label>
+        </div>
 
-      <br />
-      <hr />
+        <div class="form-floating">
+          <input
+            class="form-control"
+            id="passwordClear"
+            type="password"
+            name="passwordClear"
+            placeholder="********"
+          />
+          <label for="passwordClear" class="form-label"></label>
+        </div>
 
-      <label for="passwordClear">Password</label>
-      <br />
-      <input
-        id="passwordClear"
-        type="password"
-        name="passwordClear"
-        placeholder="********"
-      />
+      {{else}}
 
-    {{else}}
-      <label for="email"> E-Mail Address </label>
-      <br />
-      <input
-        id="email"
-        type="email"
-        name="email"
-        placeholder="user@domain.com"
-      />
+        <div class="form-floating">
+          <input
+            class="form-control"
+            id="email"
+            type="email"
+            name="email"
+            placeholder="user@domain.com"
+          />
+          <label for="email" class="form-label">Email Address</label>
+        </div>
 
-      <br />
-      <hr />
+        <div class="form-floating">
+          <input
+            class="form-control"
+            id="username"
+            type="text"
+            name="username"
+            placeholder="User Name"
+          />
+          <label for="username" class="form-label">Username</label>
+        </div>
 
-      <label for="username">Username</label>
-      <br />
-      <input
-        id="username"
-        type="text"
-        name="username"
-        placeholder="User Name"
-      />
+        <div class="form-floating">
+          <input
+            class="form-control"
+            id="passwordClear"
+            type="password"
+            name="passwordClear"
+            placeholder="********"
+          />
+          <label for="passwordClear" class="form-label">Password</label>
+        </div>
 
-      <br />
-      <hr />
+      {{/if}}
+      <div class="row">
+        <div class="col-12 d-flex justify-content-center">
+          <button
+            class="btn btn-light btn-outline-primary"
+            id="submit-btn"
+            type="submit"
+          >
+            Create Account
+          </button>
+        </div>
+      </div>
 
-      <label for="passwordClear">Password</label>
-      <br />
-      <input
-        id="passwordClear"
-        type="password"
-        name="passwordClear"
-        placeholder="********"
-      />
-
-    {{/if}}
-
-    <br />
-    <hr />
-
-    <button type="submit">Create Account</button>
-
-    {{#if errorMessage}}
-      <p class="error">{{errorMessage}}</p>
-    {{/if}}
-  </form>
+      {{#if errorMessage}}
+        <p class="error">{{errorMessage}}</p>
+      {{/if}}
+    </form>
+  </div>
 </div>

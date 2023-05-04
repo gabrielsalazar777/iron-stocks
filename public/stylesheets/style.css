@@ -1,22 +1,70 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font-family: "Poppins", sans-serif;
+  /* background-color: red; */
+  /* margin: 0;
+  padding: 0; */
 }
 
-a {
+nav img {
+  width: 5vw;
+}
+
+nav h1 {
+  font-size: 3vw;
+  /* margin-left: -5vw; */
+}
+
+nav p {
+  font-size: 1.5vw;
+  margin-top: -1vw;
+}
+
+#landing-body {
+  background-image: url("/images/landing.jpg");
+  /* background-color: red; */
+  background-size: cover;
+  /* background-position: top; */
+  height: 100vh;
+}
+
+#landing-text {
+  margin-top: 15vh;
+  backdrop-filter: blur(25px);
+  font-size: 2vw;
+}
+
+input {
+  /* border-color: black; */
+  /* border-width: 10vw;; */
+  box-shadow: 10vw;
+}
+
+.form-floating {
+  margin-top: 5vh;
+}
+
+#submit-btn {
+  margin-top: 5vh;
+}
+
+.error {
+  background: #f02b63;
+  box-sizing: border-box;
+  color: #fff;
+  margin: 20px auto;
+  padding: 20px;
+  width: fit-content;
+}
+
+/* #landing-text p {
+    font-size: 4wv;
+} */
+/* a {
   color: #00b7ff;
 }
 
-body {
-  background-color: rgb(234, 237, 239);
-  /* height: 1000px; */
-  /* width: 100vw; */
-}
-
 .tradingview-widget-container {
-  /* height: 500px; */
-  background-color: red;
-  /* width: 100vw; */
+  background-color: rgb(234, 237, 239);
 }
 
 .error {
@@ -26,4 +74,4 @@ body {
   margin: 20px auto;
   padding: 20px;
   width:fit-content;
-}
+} */
