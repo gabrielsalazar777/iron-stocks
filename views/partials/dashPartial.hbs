@@ -1,7 +1,22 @@
-<nav>
-  {{!-- <p>{{username}}</p> --}}
-  <a href="/users/dashboard">Dashboard</a>
-  <form action="/auth/logout" method="post">
-    <button>Log Out</button>
-  </form>
+<nav class="navbar navbar-expand navbar-dark bg-primary">
+  <div class="container">
+    <div class="navbar-brand">
+      <a href="/">
+        <h1 class="text-decoration-underline">
+          Iron
+          <span><img src="/images/logo.png" alt="stock clipart logo" /></span>
+          Stocks
+        </h1>
+        <p>Your portfolios, your news.</p>
+      </a>
+    </div>
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a href="/users/dashboard">
+          <button class="btn btn-light text-primary">Dashboard</button>
+        </a>
+        <a class="btn btn-light text-primary" href="/auth/logout">Logout</a>
+      </li>
+    </ul>
+  </div>
 </nav>

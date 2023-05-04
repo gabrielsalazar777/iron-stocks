@@ -40,7 +40,7 @@ app.use(
       sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       secure: process.env.NODE_ENV === "production",
       httpOnly: true,
-      maxAge: 600000, // 60 * 1000 ms === 1 min
+      maxAge: 6000000, // 60 * 1000 ms === 1 min
     },
     store: MongoStore.create({
       mongoUrl: process.env.MONGODB_URI || "mongodb://localhost/basic-auth",

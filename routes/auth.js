@@ -95,8 +95,8 @@ router.post("/login", isLoggedIn, (req, res, next) => {
     });
 });
 
-router.post("/logout", isLoggedOut, (req, res, next) => {
-    // console.log(req.session.user)
+router.get("/logout", isLoggedOut, (req, res, next) => {
+    console.log(req.session.user)
   req.session.destroy((err) => {
     // if (err) next(err);
     res.redirect("/");

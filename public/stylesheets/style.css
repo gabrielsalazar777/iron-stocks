@@ -25,7 +25,7 @@ nav p {
   margin-top: -1vw;
 }
 
-#landing-body {
+.landing-body {
   background-image: url("/images/landing.jpg");
   /* background-color: red; */
   background-size: cover;
@@ -39,19 +39,51 @@ nav p {
   font-size: 2vw;
 }
 
-input {
-  /* border-color: black; */
-  /* border-width: 10vw;; */
-  box-shadow: 10vw;
+.auth-form {
+  margin-top: 15vh;
 }
+
+/* input {
+  border-color: black;
+  border-width: 10vw;;
+  box-shadow: 10vw;
+  box-shadow: 100 100 100px 100px #000000;
+} */
 
 .form-floating {
   margin-top: 5vh;
 }
 
-#submit-btn {
+.submit-btn {
   margin-top: 5vh;
 }
+
+/* .create-btn {
+  margin-top: 6.5vh;
+} */
+
+#portfolio-title {
+  padding-top: 3vh;
+  padding-left: 2vw;
+}
+
+#add-input {
+  margin-top: 3vw;
+}
+
+#change-portfolio {
+  margin-top: -2vh;
+}
+
+
+
+/* .card-title {
+  background-color;
+} */
+/*
+#delete-btn {
+  padding-left: -7vw;
+} */
 
 .error {
   background: #f02b63;
@@ -61,23 +93,3 @@ input {
   padding: 20px;
   width: fit-content;
 }
-
-/* #landing-text p {
-    font-size: 4wv;
-} */
-/* a {
-  color: #00b7ff;
-}
-
-.tradingview-widget-container {
-  background-color: rgb(234, 237, 239);
-}
-
-.error {
-  background: #f02b63;
-  box-sizing: border-box;
-  color: #fff;
-  margin: 20px auto;
-  padding: 20px;
-  width:fit-content;
-} */

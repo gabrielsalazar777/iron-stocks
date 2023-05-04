@@ -1,23 +1,48 @@
-{{>indexPartial}}
+<div class="landing-body">
+  {{>indexPartial}}
+  <div class="container">
+    <form class="auth-form" action="/auth/login" method="post">
+      <div class="form-floating">
+        <input
+          class="form-control border-5"
+          type="email"
+          name="email"
+          id="email"
+          placeholder="user@domain.com"
+        />
+        <label for="email" class="form-label">E-Mail Address</label>
+      </div>
+      <div class="form-floating">
+        <input
+          class="form-control border-5"
+          type="password"
+          name="password"
+          id="password"
+          placeholder="********"
+        />
+        <label for="password" class="form-label">Password</label>
+      </div>
+
+      <div class="row">
+        <div class="col-12 d-flex justify-content-center">
+          <button
+            class="btn btn-light btn-outline-primary submit-btn"
+            type="submit"
+          >
+            Login
+          </button>
+        </div>
+      </div>
+
+      {{! <button type="submit">Login</button> }}
+
+      {{#if errorMessage}}
+        <p class="error">{{errorMessage}}</p>
+      {{/if}}
+    </form>
+  </div>
+</div>
 
 <div>
-  <h2>Login</h2>
-  <form action="/auth/login" method="post">
-    <label for="email">E-Mail Address</label>
-    <input type="email" name="email" id="email" placeholder="user@domain.com" />
-
-    <label for="password">Password</label>
-    <input
-      type="password"
-      name="password"
-      id="password"
-      placeholder="********"
-    />
-
-    <button type="submit">Login</button>
-
-    {{#if errorMessage}}
-      <p class="error">{{errorMessage}}</p>
-    {{/if}}
-  </form>
+  {{! <h2>Login</h2> }}
 </div>
