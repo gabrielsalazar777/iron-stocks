@@ -50,13 +50,17 @@ nav p {
   box-shadow: 100 100 100px 100px #000000;
 } */
 
-.form-floating {
+/* .form-floating {
+  margin-top: 5vh;
+} */
+
+.space-above {
   margin-top: 5vh;
 }
 
-.submit-btn {
+/* .submit-btn {
   margin-top: 5vh;
-}
+} */
 
 /* .create-btn {
   margin-top: 6.5vh;
@@ -67,7 +71,7 @@ nav p {
   padding-left: 2vw;
 }
 
-#add-input {
+.add-input {
   margin-top: 3vw;
 }
 
@@ -75,7 +79,9 @@ nav p {
   margin-top: -2vh;
 }
 
-
+#stock-quote {
+  padding-left: 3vw;
+}
 
 /* .card-title {
   background-color;

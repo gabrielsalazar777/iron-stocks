@@ -8,7 +8,7 @@
 
   <div class="container">
     <form action="/users/dashboard" method="post">
-      <div class="input-group" id="add-input">
+      <div class="input-group add-input">
         <input
           class="form-control border-5"
           type="text"
@@ -26,10 +26,10 @@
 <br />
 
 <div class="row">
-    <div id="portfolio-title" class="col-12 d-flex justify-content-left">
-      <h4>Your Portfolios:</h4>
-    </div>
+  <div id="portfolio-title" class="col-12 d-flex justify-content-left">
+    <h4>Your Portfolios:</h4>
   </div>
+</div>
 
 {{#each portfolios}}
 
@@ -37,7 +37,7 @@
     <div class="card-body">
       <div class="card-header">
         <h5>
-        <a href="/users/portfolio/{{_id}}">{{name}}</a>
+          <a href="/users/portfolio/{{_id}}">{{name}}</a>
         </h5>
       </div>
       <div class="card-text">
@@ -45,7 +45,7 @@
           <div class="col-auto">
             <form action="/users/edit/{{id}}" method="get">
               <button
-                class="btn btn-light btn-outline-success submit-btn"
+                class="btn btn-light btn-outline-success space-above"
                 type="submit"
               >
                 Edit
@@ -55,7 +55,7 @@
           <div class="col-auto">
             <form action="/users/delete-portfolio/{{id}}" method="post">
               <button
-                class="btn btn-light btn-outline-danger submit-btn"
+                class="btn btn-light btn-outline-danger space-above"
                 type="submit"
               >
                 Delete

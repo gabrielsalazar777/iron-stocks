@@ -1,27 +1,47 @@
-{{>dashPartial}}
-
-<h1>Your portfolio!</h1>
-
-<p> Portfolio Name: {{name}}</p>
-
-<form action="/users/portfolio/{{_id}}" method="post">
-  <p>Add Stock</p>
-
-  <label for="stock-ticker">Stock Ticker</label>
-  <input type="text" name="ticker" id="stock-ticker" placeholder="AAPL" />
-
-  <button type="submit">Add Stock</button>
-
-</form>
+<div>
+  {{>dashPartial}}
+  <div class="container">
+  <h2 class="space-above"> Portfolio: {{name}}</h2>
+  <form action="/users/portfolio/{{_id}}" method="post">
+    <label class="space-above" for="stock-ticker">New Stock Ticker</label>
+    <div class="row">
+      <div class="col-12 d-flex justify-content-left">
+        <div class="input-group" >
+          <input class="form-control border-5" type="text" name="ticker" id="stock-ticker" placeholder="AAPL" />
+          <button class="btn btn-light btn-outline-primary" type="submit">Add Stock</button>
+        </div>
+      </div>
+    </div>
+  </form>
+  </div>
+</div>
 
 {{#each stocks}}
-  <p>Ticker:</p>
-  <a href="/stock/{{_id}}">{{ticker}}</a>
-  <p>Current Price: {{quote.0.[Global Quote].[05. price]}}</p>
-  <p>Change: {{quote.0.[Global Quote].[09. change]}} ({{quote.0.[Global Quote].[10. change percent]}})</p>
-  <form action="/users/portfolio/delete/{{../_id}}/{{_id}}" method="post">
-    <button type="submit">Remove Stock</button>
-  </form>
+  <div class="container">
+    <div class="card">
+      <div class="card-body">
+        <div class="card-header">
+          <div class="row justify-content-between">
+            <div class="col text-start">
+              <h5><a href="/stock/{{_id}}">{{ticker}}</a></h5>
+            </div>
+            <div class="col text-end">
+              <form action="/users/portfolio/delete/{{../_id}}/{{_id}}" method="post">
+                <button class="btn btn-danger" type="submit">Remove Stock</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-text">
+        <div class="row">
+          <div class="col-auto" id="stock-quote">
+            <p>Current Price: <strong>{{quote.0.[Global Quote].[05. price]}}</strong> </p>
+            <p>Change: <strong> {{quote.0.[Global Quote].[09. change]}} ({{quote.0.[Global Quote].[10. change percent]}})</strong></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   <br>
-  <hr>
 {{/each}}

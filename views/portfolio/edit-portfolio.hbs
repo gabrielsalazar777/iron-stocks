@@ -1,10 +1,28 @@
-{{>dashPartial}}
+<div>
+  {{>dashPartial}}
 
-<h1>Edit Portfolio: {{name}}</h1>
+  <div class="container">
+    <h2 class="space-above"> Edit {{name}}</h2>
+    <form action="/users/edit/{{_id}}" method="post">
+      <label class="space-above" for="name">New Portfolio Name</label>
+      <div class="row">
+        <div class="col-12 d-flex justify-content-left">
+          <div class="input-group">
+            <input
+              class="form-control border-5"
+              type="text"
+              name="name"
+              id="name"
+              value="{{name}}"
+            />
+            <button class="btn btn-light btn-outline-success" type="submit">Save
+              Changes</button>
+          </div>
 
-<form action="/users/edit/{{_id}}" method="post">
-    <label for="name">Name</label>
-    <input type="text" name="name" id="name" value="{{name}}">
+        </div>
+      </div>
+    </form>
 
-    <button type="submit">Save Changes</button>
-</form>
+  </div>
+
+</div>
