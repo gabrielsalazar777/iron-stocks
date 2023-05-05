@@ -10,7 +10,6 @@ const { isLoggedOut, isOwner } = require("../middleware/route-guard");
 
 // get dashboard
 router.get("/dashboard", isLoggedOut, (req, res, next) => {
-  // if (req.session.user) {
   User.findById(req.session.user._id)
     .populate("portfolios")
     .then((user) => {
@@ -19,16 +18,11 @@ router.get("/dashboard", isLoggedOut, (req, res, next) => {
     .catch((err) => {
       console.log(err);
     });
-  // } else {
-  //   res.redirect("/auth/login");
-  // }
 });
 
 // add portfolio
 router.post("/dashboard", isLoggedOut, (req, res, next) => {
-  // console.log('Req body: ', req.body);
   const { name } = req.body;
-  // console.log("Req body name: ", name);
   Portfolio.create({ name })
     .then((newPortfolio) => {
       User.findByIdAndUpdate(
@@ -59,17 +53,14 @@ router.get(
           portfolio.stocks.forEach((e) => {
             axios
               .get(
-                `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${e.ticker}&apikey=F6PG0KOXPZYMOK2E`
+                `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${e.ticker}&apikey=${process.env.API_KEY}`
               )
               .then((newQuote) => {
-                // console.log("NEW QUOTEE: ", newQuote.data);
-                // console.log("E ID: ", e._id);
                 Stock.findByIdAndUpdate(
                   e._id,
                   { quote: newQuote.data },
                   { new: true }
                 ).then((stock) => {
-                  // console.log("LINE 82 TEST: ", stock.quote);
                 });
               });
           });
@@ -80,8 +71,6 @@ router.get(
           .populate("stocks")
           .then((portfolio) => {
             res.render("portfolio/portfolio.hbs", portfolio);
-            // console.log("LINE 87: ", portfolio);
-            // console.log("New quote: ", portfolio.stocks[0].quote);
           });
       })
       .catch((err) => {
@@ -95,7 +84,6 @@ router.get("/edit/:portfolioId", isLoggedOut, isOwner, (req, res, next) => {
   const portfolioId = req.params.portfolioId;
   Portfolio.findById(portfolioId).then((portfolio) => {
     res.render("portfolio/edit-portfolio.hbs", portfolio);
-    console.log(portfolio);
   });
 });
 
@@ -118,7 +106,6 @@ router.post(
   isOwner,
   (req, res, next) => {
     const portfolioId = req.params.portfolioId;
-    console.log(portfolioId);
     User.findByIdAndUpdate(
       req.session.user._id,
       { $pull: { portfolios: portfolioId } },
@@ -143,11 +130,9 @@ router.post(
   (req, res, next) => {
     const portfolioId = req.params.portfolioId;
     const { ticker } = req.body;
-    console.log('LINE 146 REQ BODY: ', ticker.length)
     if (ticker.length >= 1) {
       Stock.find({ ticker: ticker }).then((foundStock) => {
         if (foundStock.length !== 0) {
-          // console.log("LINE 103: ", foundStock, foundStock[0]._id);
           Portfolio.findByIdAndUpdate(
             portfolioId,
             {
@@ -156,7 +141,6 @@ router.post(
             { new: true }
           )
             .then((portfolio) => {
-              // console.log("LINE 112: ", portfolio);
               res.redirect(`/users/portfolio/${portfolioId}`);
             })
             .catch((err) => {
@@ -165,12 +149,11 @@ router.post(
         } else {
           axios
             .get(
-              `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${ticker}&apikey=F6PG0KOXPZYMOK2E`
+              `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${ticker}&apikey=${process.env.API_KEY}`
             )
             .then((newQuote) => {
               const quote = [];
               quote.push(newQuote.data);
-              console.log("LINE 114: ", quote[0].data);
               Stock.create({ ticker, quote }).then((newStock) => {
                 Portfolio.findByIdAndUpdate(
                   portfolioId,
@@ -190,18 +173,6 @@ router.post(
         }
       });
     }
-    // THIS WAS A WORK IN PROGRESS (WIP) FOR ERROR MESSAGE ON EMPTY STOCK NAME
-    // else {
-    //   Portfolio.findById(req.params.portfolioId)
-    //       .populate("stocks")
-    //       .then((portfolio) => {
-    //         res.render("portfolio/portfolio.hbs", portfolio, errorMessage: "Enter stock name");
-
-    //       })
-    // res.render("users/portfolio.hbs", {
-    //   errorMessage: "Email or password is incorrect",
-    // });
-  // }
   }
 );
 

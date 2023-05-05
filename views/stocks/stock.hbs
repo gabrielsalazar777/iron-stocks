@@ -1,52 +1,101 @@
-{{>dashPartial}}
+<div>
+  {{>dashPartial}}
+  <div class="container">
+    <h1 class="space-above">{{1.Name}} - {{1.Exchange}}:{{1.Symbol}}</h1>
+    <h2> {{1.Country}} - {{1.Sector}}</h2>
+    <p>{{1.Description}}</p>
 
-<h1>{{[1].Name}} - {{[1].Exchange}}:{{[1].Symbol}}</h1>
-<h2> {{[1].Country}} - {{[1].Sector}}</h2>
-<p>{{[1].Description}}</p>
+    <div class="row space-above">
+      <div class="col">
+        <div class="card">
+          <div class="card-header bg-primary text-light text-center py-2"><strong>Market Cap</strong></div>
+          <div class="card-text text-center py-3">${{1.MarketCapitalization}}</div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card">
+          <div class="card-header bg-primary text-light text-center py-2"><strong>P/E Ratio</strong></div>
+          <div class="card-text text-center py-3">{{1.PERatio}}</div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card">
+          <div class="card-header bg-primary text-light text-center py-2"><strong>Earnings Per Share</strong></div>
+          <div class="card-text text-center py-3">${{1.EPS}}</div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card">
+          <div class="card-header bg-primary text-light text-center py-2"><strong>Profit Margin</strong></div>
+          <div class="card-text text-center py-3">{{1.ProfitMargin}}</div>
+        </div>
+      </div>
+    </div>
+    <div class="row space-above">
+      <div class="col">
+        <div class="card">
+          <div class="card-header bg-primary text-light text-center py-2"><strong>Dividend Yield</strong></div>
+          <div class="card-text text-center py-3">{{1.DividendYield}}</div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card">
+          <div class="card-header bg-primary text-light text-center py-2"><strong>Dividend Date</strong></div>
+          <div class="card-text text-center py-3">{{1.DividendDate}}</div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card">
+          <div class="card-header bg-danger text-light text-center py-2"><strong>52 Week Low</strong></div>
+          <div class="card-text text-center py-3">${{1.52WeekLow}}</div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card">
+          <div class="card-header bg-success text-light text-center py-2"><strong>52 Week High</strong></div>
+          <div class="card-text text-center py-3">${{1.52WeekHigh}}</div>
+        </div>
+      </div>
+    </div>
+    <div class="row space-above">
+      <div class="col">
+        <div class="card">
+          <div class="card-header bg-primary text-light text-center py-2"><strong>200-Day Moving Average</strong></div>
+          <div class="card-text text-center py-3">${{1.200DayMovingAverage}}</div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card">
+          <div class="card-header bg-primary text-light text-center py-2"><strong>Analyst Price Target</strong></div>
+          <div class="card-text text-center py-3">${{1.AnalystTargetPrice}}</div>
+        </div>
+      </div>
+    </div>
 
-{{!-- {{#with overview.data}} --}}
-<ul>
-    <li>Market Cap: ${{[1].MarketCapitalization}}</li>
-    <li>P/E Ratio: {{[1].PERatio}} </li>
-    <li>Earnings Per Share: ${{[1].EPS}} </li>
-    <li>Profit Margin: {{[1].ProfitMargin}} </li>
-    <li>Dividend Yield: {{[1].DividendYield}} </li>
-    <li>Dividend Date: {{[1].DividendDate}} </li>
-    <li>52 Week Low: {{[1].52WeekLow}} </li>
-    <li>52 Week High: {{[1].52WeekHigh}} </li>
-    <li>200-Day Moving Average: ${{[1].200DayMovingAverage}} </li>
-    <li>Analyst Price Target: ${{[1].AnalystTargetPrice}} </li>
-</ul>
+    <div class="space-above" id="tradingview_fcc6d"></div>
+    <div class="tradingview-widget-copyright"><a
+      href="https://www.tradingview.com/symbols/{{1.Exchange}}-{{1.Ticker}}/"
+      rel="noopener"
+      target="_blank">
+        <span class="blue-text">{{1.Ticker}} stock chart</span></a> by TradingView
+    </div>
+    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+    <script type="text/javascript">
+      new TradingView.widget( { "height": "650vh", "interval": "D", "symbol": '{{0}}',
+        "timezone": "Etc/UTC", "theme": "light", "style": "1", "locale": "en",
+        "toolbar_bg": "#f1f3f6", "enable_publishing": false, "allow_symbol_change":
+        true, "container_id": "tradingview_fcc6d" } );
+    </script>
 
-
-{{!-- <div class="tradingview-widget-container"> --}}
-  <div id="tradingview_fcc6d"></div>
-  <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/symbols/{{[1].Exchange}}-{{[1].Ticker}}/" rel="noopener" target="_blank"><span class="blue-text">{{[1].Ticker}} stock chart</span></a> by TradingView</div>
-  <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
-  <script type="text/javascript">
-  new TradingView.widget(
-  {
-  "height": "650vh",
-  "interval": "D",
-  "symbol": '{{[0]}}',
-  "timezone": "Etc/UTC",
-  "theme": "light",
-  "style": "1",
-  "locale": "en",
-  "toolbar_bg": "#f1f3f6",
-  "enable_publishing": false,
-  "allow_symbol_change": true,
-  "container_id": "tradingview_fcc6d"
-}
-  );
-  </script>
-{{!-- </div> --}}
-
-
-{{#each [2]}}
-    <a href="{{url}}">{{title}}</a>
-    <p>{{source}}</p>
-    <p>Sentiment: {{overall_sentiment_label}}</p>
-    <br>
-    <hr>
-{{/each}}
+      <h4 class="space-above">{{1.Name}} latest news: </h4>
+      <div class="list-group">
+        {{#each [2]}}
+        <div class="list-group-item">
+          <a href="{{url}}">{{title}}</a>
+          <p>{{source}}</p>
+          <p>Sentiment: {{overall_sentiment_label}}</p>
+        </div>
+        {{/each}}
+      </div>
+  </div>
+</div>

@@ -15,23 +15,18 @@ router.get("/:stockId", isLoggedOut, (req, res, next) => {
     .then((stock) => {
       axios
         .get(
-          `https://www.alphavantage.co/query?function=OVERVIEW&symbol=${stock.ticker}&apikey=F6PG0KOXPZYMOK2E`
+          `https://www.alphavantage.co/query?function=OVERVIEW&symbol=${stock.ticker}&apikey=${process.env.API_KEY}`
         )
         .then((overview) => {
           stockRef.push(`${overview.data.Exchange}:${overview.data.Symbol}`);
           stockRef.push(overview.data);
-          // res.render("stocks/stock.hbs", stockRef);
-          // res.render("stocks/stock.hbs", [overview.data, stockRef]);
-          // console.log(overview);
-          // console.log("STOCK REF: ", stockRef);
         })
         .then(() => {
           axios
             .get(
-              `https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers=${stock.ticker}&sort=LATEST&apikey=F6PG0KOXPZYMOK2E`
+              `https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers=${stock.ticker}&sort=LATEST&apikey=${process.env.API_KEY}`
             )
             .then((stockNews) => {
-              console.log("LINE 32: ", stockNews.data.feed);
               stockRef.push(stockNews.data.feed);
               res.render("stocks/stock.hbs", stockRef);
             });

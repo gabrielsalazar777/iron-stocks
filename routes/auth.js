@@ -13,7 +13,6 @@ router.get("/register", isLoggedIn, (req, res, next) => {
 });
 
 router.post("/register", isLoggedIn, (req, res, next) => {
-  console.log("REGISTRATION: ", req.body);
   const { email, username, passwordClear } = req.body;
 
   if (!email || !username || !passwordClear) {
@@ -45,7 +44,6 @@ router.post("/register", isLoggedIn, (req, res, next) => {
       });
     })
     .then((userFromDB) => {
-      //   console.log("Newly created user is: ", userFromDB);
       res.redirect("/auth/login");
     })
     .catch((err) => {
@@ -54,7 +52,6 @@ router.post("/register", isLoggedIn, (req, res, next) => {
           .status(500)
           .render("auth/register.hbs", { errorMessage: err.message });
       } else if (err.code === 11000) {
-        // console.log("line 58 hit");
         res.status(500).render("auth/register.hbs", {
           errorMessage:
             "Username and email need to be unique. Either username or email is already used.",
@@ -96,9 +93,7 @@ router.post("/login", isLoggedIn, (req, res, next) => {
 });
 
 router.get("/logout", isLoggedOut, (req, res, next) => {
-    console.log(req.session.user)
   req.session.destroy((err) => {
-    // if (err) next(err);
     res.redirect("/");
   });
 });

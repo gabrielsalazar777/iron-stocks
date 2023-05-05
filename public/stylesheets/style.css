@@ -1,14 +1,10 @@
 body {
   font-family: "Poppins", sans-serif;
-  /* background-color: red; */
-  /* margin: 0;
-  padding: 0; */
 }
 
 .navbar-brand a {
   text-decoration: none;
   color: inherit;
-  /* color: white; */
 }
 
 nav img {
@@ -17,7 +13,6 @@ nav img {
 
 nav h1 {
   font-size: 3vw;
-  /* margin-left: -5vw; */
 }
 
 nav p {
@@ -27,9 +22,7 @@ nav p {
 
 .landing-body {
   background-image: url("/images/landing.jpg");
-  /* background-color: red; */
   background-size: cover;
-  /* background-position: top; */
   height: 100vh;
 }
 
@@ -43,28 +36,9 @@ nav p {
   margin-top: 15vh;
 }
 
-/* input {
-  border-color: black;
-  border-width: 10vw;;
-  box-shadow: 10vw;
-  box-shadow: 100 100 100px 100px #000000;
-} */
-
-/* .form-floating {
-  margin-top: 5vh;
-} */
-
 .space-above {
   margin-top: 5vh;
 }
-
-/* .submit-btn {
-  margin-top: 5vh;
-} */
-
-/* .create-btn {
-  margin-top: 6.5vh;
-} */
 
 #portfolio-title {
   padding-top: 3vh;
@@ -83,13 +57,10 @@ nav p {
   padding-left: 3vw;
 }
 
-/* .card-title {
-  background-color;
-} */
-/*
-#delete-btn {
-  padding-left: -7vw;
-} */
+.list-group {
+  height: 50vh;
+  overflow-y: auto;
+}
 
 .error {
   background: #f02b63;
